@@ -1,36 +1,56 @@
 package com.ling.aplication.services;
 
 import com.ling.aplication.models.Product;
-import lombok.Getter;
+import com.ling.aplication.models.ProductDTO;
+
+import com.ling.aplication.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class ProductService {
-    @Getter
-    private List<Product> products = new ArrayList<>();
-    private Long id = 1L;
 
-    {
-        products.add(new Product(id++, "Car", "Heel duur auto", 1000, "Paris", "Ik"));
-        products.add(new Product(id++, "Carersrsrsf", "Heel duur aufsdfto", 10002, "Parisd", "Iks"));
+    @Autowired
+    private ProductRepository productRepository;
+
+    /**
+     * Adds new product to repository
+     *
+     * @param productDTO not null
+     * @throws NullPointerException if product is null
+     */
+    public void add(ProductDTO productDTO) {
+
+        productRepository.addDTO(productDTO);
     }
 
-    public void add(Product product) {
-        product.setId(id++);
-        products.add(product);
-    }
-
+    /**
+     * Deletes a product by id if it exists,
+     * otherwise ignore.
+     *
+     * @param id id of the product
+     */
     public void delete(Long id) {
-        products.removeIf(product -> product.getId().equals(id));
+
+        productRepository.delete(id);
     }
 
+    /**
+     * Get product by id
+     *
+     * @param id id of the product
+     * @return null if product is not found
+     */
     public Product getProductById(Long id) {
-        for (Product product : products) {
-            if (product.getId().equals(id)) return product;
-        }
-        return null;
+
+        return productRepository.getProductById(id);
     }
+
+    public List<Product> getProducts() {
+        return productRepository.getProducts();
+    }
+
 }
