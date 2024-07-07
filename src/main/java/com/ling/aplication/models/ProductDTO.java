@@ -1,7 +1,6 @@
 package com.ling.aplication.models;
 
-public record Product(
-        Long id,
+public record ProductDTO(
         String title,
         String description,
         int price,
